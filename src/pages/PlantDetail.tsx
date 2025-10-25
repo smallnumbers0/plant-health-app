@@ -12,6 +12,7 @@ import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { usePlant, useDeletePlant } from '../hooks/usePlants';
 import { TreatmentTimeline } from '../components/TreatmentTimeline';
+import { useAuth } from '../hooks/useAuth';
 import type { DiagnosisResult } from '../services/database.types';
 import './PlantDetail.css';
 
@@ -19,8 +20,10 @@ export function PlantDetail() {
   const { plantId } = useParams<{ plantId: string }>();
   const navigate = useNavigate();
   const { data: plant, isLoading } = usePlant(plantId);
+  const { user, signOut } = useAuth();
   const deletePlant = useDeletePlant();
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [showUserMenu, setShowUserMenu] = useState(false);
 
   if (isLoading) {
     return (
@@ -57,6 +60,100 @@ export function PlantDetail() {
     }
   };
 
+  const handleLogout = async () => {
+    try {
+      await signOut();
+      // ProtectedRoute will automatically redirect to /auth
+    } catch (error) {
+      console.error('Logout failed:', error);
+      alert('Failed to logout. Please try again.');
+    }
+  };
+
+  // Generate contextual tips based on plant diagnosis
+  const generateTips = (diagnosis: DiagnosisResult | null, plantName: string | null) => {
+    const tips = [];
+
+    // Diagnosis-based tips (priority)
+    if (diagnosis?.issues && diagnosis.issues.length > 0) {
+      const issue = diagnosis.issues[0];
+
+      if (issue.severity === 'high') {
+        tips.push({
+          icon: '⚠️',
+          title: 'Act Quickly',
+          description: 'High severity issues can escalate rapidly. Start treatment immediately for best results.'
+        });
+      }
+
+      // Add tips based on common causes
+      if (issue.causes?.some(cause => cause.toLowerCase().includes('water'))) {
+        tips.push({
+          icon: '💧',
+          title: 'Water Wisely',
+          description: 'Use the finger test: stick your finger 2 inches into soil. Water only when dry at that depth.'
+        });
+      }
+
+      if (issue.causes?.some(cause => cause.toLowerCase().includes('light') || cause.toLowerCase().includes('sun'))) {
+        tips.push({
+          icon: '☀️',
+          title: 'Light Matters',
+          description: 'Rotate your plant 90° every week to ensure even light exposure and balanced growth.'
+        });
+      }
+
+      if (issue.causes?.some(cause => cause.toLowerCase().includes('humidity'))) {
+        tips.push({
+          icon: '🌫️',
+          title: 'Humidity Hack',
+          description: 'Group plants together or place on a pebble tray with water to increase humidity naturally.'
+        });
+      }
+
+      if (issue.causes?.some(cause => cause.toLowerCase().includes('pest') || cause.toLowerCase().includes('insect'))) {
+        tips.push({
+          icon: '🔍',
+          title: 'Pest Prevention',
+          description: 'Inspect the underside of leaves weekly - most pests hide there. Early detection is key.'
+        });
+      }
+    }
+
+    // Fill remaining slots with general tips if needed
+    const generalTips = [
+      {
+        icon: '💡',
+        title: 'Monitor Daily',
+        description: 'Check your plant at the same time each day to catch early warning signs of stress or disease.'
+      },
+      {
+        icon: '✂️',
+        title: 'Prune Strategically',
+        description: 'Remove dead or yellowing leaves promptly to redirect energy to healthy growth and prevent disease spread.'
+      },
+      {
+        icon: '🌡️',
+        title: 'Temperature Control',
+        description: 'Most houseplants prefer temperatures between 65-75°F. Avoid placing near drafty windows or heating vents.'
+      },
+      {
+        icon: '🌱',
+        title: 'Fresh Soil Yearly',
+        description: 'Repot annually in spring with fresh soil to replenish nutrients and prevent soil compaction.'
+      }
+    ];
+
+    // Add general tips until we have 4-5 tips total
+    for (const tip of generalTips) {
+      if (tips.length >= 5) break;
+      tips.push(tip);
+    }
+
+    // Ensure we return exactly 4-5 tips
+    return tips.slice(0, 5);
+  };
+
   return (
     <div className="plant-detail">
       <header className="detail-header">
@@ -88,6 +185,63 @@ export function PlantDetail() {
               </svg>
               Export Report
             </button>
+            <button
+              onClick={() => setShowDeleteConfirm(true)}
+              className="action-button delete-action-button"
+              disabled={deletePlant.isPending}
+            >
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+              >
+                <path d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2" />
+              </svg>
+              {deletePlant.isPending ? 'Deleting...' : 'Delete'}
+            </button>
+            <div className="user-menu-container">
+              <button
+                className="action-button user-menu-trigger"
+                onClick={() => setShowUserMenu(!showUserMenu)}
+              >
+                <div className="user-avatar-small">
+                  {user?.email?.charAt(0).toUpperCase() || 'U'}
+                </div>
+              </button>
+              {showUserMenu && (
+                <>
+                  <div className="menu-overlay" onClick={() => setShowUserMenu(false)} />
+                  <div className="user-dropdown-detail">
+                    <div className="dropdown-item dropdown-info">
+                      <div className="user-info-label">Signed in as</div>
+                      <div className="user-info-email">{user?.email}</div>
+                    </div>
+                    <div className="dropdown-divider" />
+                    <button
+                      className="dropdown-item dropdown-button"
+                      onClick={handleLogout}
+                    >
+                      <svg
+                        width="16"
+                        height="16"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                      >
+                        <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4" />
+                        <polyline points="16 17 21 12 16 7" />
+                        <line x1="21" y1="12" x2="9" y2="12" />
+                      </svg>
+                      Logout
+                    </button>
+                  </div>
+                </>
+              )}
+            </div>
           </div>
         </div>
       </header>
@@ -98,6 +252,28 @@ export function PlantDetail() {
           <div className="detail-sidebar">
             <div className="plant-image-card">
               <img src={plantData.image_url} alt={plantData.plant_name || 'Plant'} />
+            </div>
+
+            {/* Tips and Tricks Section */}
+            <div className="tips-section">
+              <div className="tips-header">
+                <span className="tips-icon">💡</span>
+                <h3>Care Tips</h3>
+              </div>
+
+              <div className="tips-content">
+                {generateTips(diagnosis, plantData.plant_name).map((tip, index) => (
+                  <div key={index} className="tip-item">
+                    <div className="tip-icon-wrapper">
+                      <span className="tip-icon">{tip.icon}</span>
+                    </div>
+                    <div className="tip-text">
+                      <h4 className="tip-title">{tip.title}</h4>
+                      <p className="tip-description">{tip.description}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
 
@@ -214,24 +390,6 @@ export function PlantDetail() {
               </div>
             )}
 
-            {/* Delete Button */}
-            <button
-              onClick={() => setShowDeleteConfirm(true)}
-              className="delete-plant-button"
-              disabled={deletePlant.isPending}
-            >
-              <svg
-                width="16"
-                height="16"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-              >
-                <path d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2" />
-              </svg>
-              {deletePlant.isPending ? 'Deleting...' : 'Delete Plant'}
-            </button>
           </div>
         </div>
 

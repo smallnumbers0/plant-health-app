@@ -12,6 +12,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 import { usePlants } from '../hooks/usePlants';
 import { ImageUpload } from '../components/ImageUpload';
+import { Header } from '../components/Header';
 import './Dashboard.css';
 
 export function Dashboard() {
@@ -35,6 +36,7 @@ export function Dashboard() {
 
   return (
     <div className="dashboard">
+      <Header />
       <main className="dashboard-main container">
         {!showUpload && (
           <div className="hero-section">
