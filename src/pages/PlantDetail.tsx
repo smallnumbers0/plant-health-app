@@ -72,12 +72,19 @@ export function PlantDetail() {
 
   // Get care tips from AI diagnosis or fallback to defaults
   const getCareTips = (diagnosis: DiagnosisResult | null) => {
+    // Debug: Log the diagnosis object to console
+    console.log('Diagnosis object:', diagnosis);
+    console.log('Has careTips?', diagnosis?.careTips);
+    console.log('careTips length:', diagnosis?.careTips?.length);
+
     // Use AI-generated care tips if available
     if (diagnosis?.careTips && diagnosis.careTips.length > 0) {
+      console.log('Using AI-generated care tips:', diagnosis.careTips);
       return diagnosis.careTips.slice(0, 5);
     }
 
     // Fallback to general tips if AI didn't provide them
+    console.log('Using fallback tips - AI tips not available');
     return [
       {
         icon: '💡',
