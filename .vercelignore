@@ -24,4 +24,3 @@ local-ai-server.js
 
 # Development only
 .eslintrc.*
-tsconfig.node.json
