@@ -5,17 +5,19 @@
  */
 
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 import './Header.css';
 
 export function Header() {
   const { user, signOut } = useAuth();
+  const navigate = useNavigate();
   const [showMenu, setShowMenu] = useState(false);
 
   const handleLogout = async () => {
     try {
       await signOut();
-      // ProtectedRoute will automatically redirect to /auth
+      navigate('/auth');
     } catch (error) {
       console.error('Logout failed:', error);
       alert('Failed to logout. Please try again.');
