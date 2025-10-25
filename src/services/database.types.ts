@@ -114,6 +114,7 @@ export interface DiagnosisResult {
     title: string;
     description: string;
   }[];
+  careSummary?: string;
 }
 
 // Helper types for easier access

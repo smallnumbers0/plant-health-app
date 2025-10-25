@@ -33,6 +33,7 @@ Identify:
 5. List of possible causes (3-4 bullet points)
 6. 3-5 specific actionable recommendations with timeline and priority
 7. 4-5 care tips specific to THIS plant species (not generic)
+8. A comprehensive care summary for the upcoming weeks/months
 
 Return ONLY valid JSON in this exact format:
 {
@@ -63,7 +64,8 @@ Return ONLY valid JSON in this exact format:
       "title": "Short tip title",
       "description": "Specific care tip for this exact plant species"
     }
-  ]
+  ],
+  "careSummary": "A comprehensive 2-3 paragraph summary of what the user should do for this specific plant in the upcoming future. Include immediate actions, weekly care routine, monthly tasks, and what to watch for. Be specific to the plant species and any issues detected."
 }
 
 For careTips - BE EXTREMELY SPECIFIC TO THE EXACT PLANT IDENTIFIED:
@@ -78,6 +80,16 @@ For careTips - BE EXTREMELY SPECIFIC TO THE EXACT PLANT IDENTIFIED:
   * Species-specific quirks and needs (e.g., "Peace Lilies will droop when thirsty - a reliable watering indicator")
 - Make each tip actionable and measurable
 - Limit to 4-5 tips
+
+For careSummary - CREATE A COMPREHENSIVE CARE PLAN:
+- Write 2-3 detailed paragraphs about what to do in the upcoming weeks/months
+- Address the plant by its specific name throughout
+- Structure:
+  1. First paragraph: Immediate actions needed (next 24-48 hours), especially if issues detected
+  2. Second paragraph: Weekly care routine specific to this plant species
+  3. Third paragraph: Monthly tasks, seasonal considerations, and what signs to monitor
+- Be conversational but authoritative
+- Include specific timelines and actionable steps
 
 If the plant is healthy, return severity "low" and issue name "Healthy" with general care causes.`
                 },
@@ -120,6 +132,7 @@ If the plant is healthy, return severity "low" and issue name "Healthy" with gen
       issues: diagnosis.issues || [],
       recommendations: diagnosis.recommendations || [],
       careTips: diagnosis.careTips || [],
+      careSummary: diagnosis.careSummary || '',
       modelOutput: {
         model: 'gpt-4o',
         rawResponse: content
@@ -155,6 +168,7 @@ async function getMockDiagnosis() {
       { icon: '☀️', title: 'Light Requirements', description: 'Ensure your plant gets appropriate light for its species.' },
       { icon: '🌡️', title: 'Temperature', description: 'Most houseplants prefer temperatures between 65-75°F.' },
     ],
+    careSummary: 'AI analysis is temporarily unavailable. For general plant care, check the soil moisture before watering and ensure your plant receives appropriate light for its species. Monitor for any changes in leaf color or texture, and adjust care as needed based on the plant\'s response.',
   };
 }
 

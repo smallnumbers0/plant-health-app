@@ -348,10 +348,23 @@ export function PlantDetail() {
           </div>
         </div>
 
-        {/* Treatment Timeline - Full Width */}
-        {plantId && (
-          <div className="timeline-section-full">
-            <TreatmentTimeline plantId={plantId} />
+        {/* Care Summary - Full Width */}
+        {diagnosis?.careSummary && (
+          <div className="care-summary-section">
+            <h2 className="care-summary-title">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M9 11l3 3L22 4" />
+                <path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11" />
+              </svg>
+              Care Plan for Your {plantData.plant_name}
+            </h2>
+            <div className="care-summary-content">
+              {diagnosis.careSummary.split('\n\n').map((paragraph, index) => (
+                <p key={index} className="care-summary-paragraph">
+                  {paragraph}
+                </p>
+              ))}
+            </div>
           </div>
         )}
       </main>
