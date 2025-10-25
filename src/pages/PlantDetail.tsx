@@ -11,7 +11,6 @@
 import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { usePlant, useDeletePlant } from '../hooks/usePlants';
-import { TreatmentTimeline } from '../components/TreatmentTimeline';
 import { useAuth } from '../hooks/useAuth';
 import type { DiagnosisResult } from '../services/database.types';
 import './PlantDetail.css';
