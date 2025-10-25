@@ -109,6 +109,11 @@ export interface DiagnosisResult {
     timeline: string;
     priority: number;
   }[];
+  careTips?: {
+    icon: string;
+    title: string;
+    description: string;
+  }[];
 }
 
 // Helper types for easier access

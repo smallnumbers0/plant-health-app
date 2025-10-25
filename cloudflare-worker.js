@@ -32,6 +32,7 @@ Identify:
 4. Brief description of the issue (or healthy status)
 5. List of possible causes (3-4 bullet points)
 6. 3-5 specific actionable recommendations with timeline and priority
+7. 4-5 care tips specific to THIS plant species (not generic)
 
 Return ONLY valid JSON in this exact format:
 {
@@ -55,8 +56,21 @@ Return ONLY valid JSON in this exact format:
       "timeline": "string (when to do it: 'Immediately', 'Daily', 'Weekly', etc.)",
       "priority": 1
     }
+  ],
+  "careTips": [
+    {
+      "icon": "💧",
+      "title": "Short tip title",
+      "description": "Specific care tip for this exact plant species"
+    }
   ]
 }
+
+For careTips:
+- Use relevant emojis: 💧 (water), ☀️ (light), 🌡️ (temperature), 🌫️ (humidity), ✂️ (pruning), 🌱 (soil), 🔍 (monitoring), ⚠️ (urgent), 💡 (general)
+- Make tips SPECIFIC to the identified plant species, not generic
+- Include optimal watering, light requirements, temperature preferences, and species-specific care
+- Limit to 4-5 tips
 
 If the plant is healthy, return severity "low" and issue name "Healthy" with general care causes.`
                 },
@@ -98,6 +112,7 @@ If the plant is healthy, return severity "low" and issue name "Healthy" with gen
       confidence: diagnosis.confidence || 0.90,
       issues: diagnosis.issues || [],
       recommendations: diagnosis.recommendations || [],
+      careTips: diagnosis.careTips || [],
       modelOutput: {
         model: 'gpt-4o',
         rawResponse: content
@@ -126,6 +141,12 @@ async function getMockDiagnosis() {
       { action: 'Provide appropriate light for this plant type', timeline: 'Ongoing', priority: 2 },
       { action: 'Check for common pests (aphids, mealybugs, spider mites)', timeline: 'Weekly', priority: 3 },
       { action: 'Fertilize with balanced plant food', timeline: 'Monthly', priority: 4 },
+    ],
+    careTips: [
+      { icon: '💡', title: 'Monitor Daily', description: 'Check your plant at the same time each day to catch early warning signs.' },
+      { icon: '💧', title: 'Water Wisely', description: 'Most plants prefer to dry out slightly between waterings.' },
+      { icon: '☀️', title: 'Light Requirements', description: 'Ensure your plant gets appropriate light for its species.' },
+      { icon: '🌡️', title: 'Temperature', description: 'Most houseplants prefer temperatures between 65-75°F.' },
     ],
   };
 }

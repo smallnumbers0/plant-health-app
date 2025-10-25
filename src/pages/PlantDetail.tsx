@@ -70,88 +70,36 @@ export function PlantDetail() {
     }
   };
 
-  // Generate contextual tips based on plant diagnosis
-  const generateTips = (diagnosis: DiagnosisResult | null, plantName: string | null) => {
-    const tips = [];
-
-    // Diagnosis-based tips (priority)
-    if (diagnosis?.issues && diagnosis.issues.length > 0) {
-      const issue = diagnosis.issues[0];
-
-      if (issue.severity === 'high') {
-        tips.push({
-          icon: '⚠️',
-          title: 'Act Quickly',
-          description: 'High severity issues can escalate rapidly. Start treatment immediately for best results.'
-        });
-      }
-
-      // Add tips based on common causes
-      if (issue.causes?.some(cause => cause.toLowerCase().includes('water'))) {
-        tips.push({
-          icon: '💧',
-          title: 'Water Wisely',
-          description: 'Use the finger test: stick your finger 2 inches into soil. Water only when dry at that depth.'
-        });
-      }
-
-      if (issue.causes?.some(cause => cause.toLowerCase().includes('light') || cause.toLowerCase().includes('sun'))) {
-        tips.push({
-          icon: '☀️',
-          title: 'Light Matters',
-          description: 'Rotate your plant 90° every week to ensure even light exposure and balanced growth.'
-        });
-      }
-
-      if (issue.causes?.some(cause => cause.toLowerCase().includes('humidity'))) {
-        tips.push({
-          icon: '🌫️',
-          title: 'Humidity Hack',
-          description: 'Group plants together or place on a pebble tray with water to increase humidity naturally.'
-        });
-      }
-
-      if (issue.causes?.some(cause => cause.toLowerCase().includes('pest') || cause.toLowerCase().includes('insect'))) {
-        tips.push({
-          icon: '🔍',
-          title: 'Pest Prevention',
-          description: 'Inspect the underside of leaves weekly - most pests hide there. Early detection is key.'
-        });
-      }
+  // Get care tips from AI diagnosis or fallback to defaults
+  const getCareTips = (diagnosis: DiagnosisResult | null) => {
+    // Use AI-generated care tips if available
+    if (diagnosis?.careTips && diagnosis.careTips.length > 0) {
+      return diagnosis.careTips.slice(0, 5);
     }
 
-    // Fill remaining slots with general tips if needed
-    const generalTips = [
+    // Fallback to general tips if AI didn't provide them
+    return [
       {
         icon: '💡',
         title: 'Monitor Daily',
         description: 'Check your plant at the same time each day to catch early warning signs of stress or disease.'
       },
       {
-        icon: '✂️',
-        title: 'Prune Strategically',
-        description: 'Remove dead or yellowing leaves promptly to redirect energy to healthy growth and prevent disease spread.'
+        icon: '💧',
+        title: 'Water Wisely',
+        description: 'Use the finger test: stick your finger 2 inches into soil. Water only when dry at that depth.'
+      },
+      {
+        icon: '☀️',
+        title: 'Light Requirements',
+        description: 'Ensure your plant gets appropriate light for its species.'
       },
       {
         icon: '🌡️',
         title: 'Temperature Control',
         description: 'Most houseplants prefer temperatures between 65-75°F. Avoid placing near drafty windows or heating vents.'
-      },
-      {
-        icon: '🌱',
-        title: 'Fresh Soil Yearly',
-        description: 'Repot annually in spring with fresh soil to replenish nutrients and prevent soil compaction.'
       }
     ];
-
-    // Add general tips until we have 4-5 tips total
-    for (const tip of generalTips) {
-      if (tips.length >= 5) break;
-      tips.push(tip);
-    }
-
-    // Ensure we return exactly 4-5 tips
-    return tips.slice(0, 5);
   };
 
   return (
@@ -262,7 +210,7 @@ export function PlantDetail() {
               </div>
 
               <div className="tips-content">
-                {generateTips(diagnosis, plantData.plant_name).map((tip, index) => (
+                {getCareTips(diagnosis).map((tip, index) => (
                   <div key={index} className="tip-item">
                     <div className="tip-icon-wrapper">
                       <span className="tip-icon">{tip.icon}</span>
