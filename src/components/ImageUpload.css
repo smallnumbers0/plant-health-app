@@ -1,0 +1,121 @@
+.image-upload-container {
+  width: 100%;
+}
+
+.upload-area {
+  border: 2px dashed var(--border);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-2xl);
+  text-align: center;
+  cursor: pointer;
+  transition: all var(--transition-base);
+  background: var(--surface);
+  min-height: 300px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-lg);
+}
+
+.upload-area:hover {
+  border-color: var(--primary-green);
+  background: var(--surface-hover);
+}
+
+.upload-area.dragging {
+  border-color: var(--secondary-green);
+  background: rgba(90, 171, 97, 0.05);
+  transform: scale(1.02);
+}
+
+.upload-icon {
+  color: var(--primary-green);
+  opacity: 0.8;
+}
+
+.upload-area h3 {
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.upload-hint {
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.upload-hint-small {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+}
+
+.upload-buttons {
+  display: flex;
+  gap: var(--spacing-md);
+  margin-top: var(--spacing-md);
+}
+
+.upload-progress-container {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-xl);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-xl);
+}
+
+.upload-preview {
+  width: 100%;
+  max-width: 400px;
+  aspect-ratio: 1;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background: var(--background);
+}
+
+.upload-preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.progress-content {
+  width: 100%;
+  max-width: 400px;
+  text-align: center;
+}
+
+.progress-content h3 {
+  margin-bottom: var(--spacing-md);
+  color: var(--primary-green);
+}
+
+.progress-bar {
+  width: 100%;
+  height: 8px;
+  background: var(--background);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+  margin-bottom: var(--spacing-md);
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    var(--accent-green),
+    var(--primary-green),
+    var(--secondary-green)
+  );
+  transition: width var(--transition-base);
+  border-radius: var(--radius-full);
+}
+
+.progress-text {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  font-weight: 500;
+}

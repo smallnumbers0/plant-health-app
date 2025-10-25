@@ -1,0 +1,27 @@
+node_modules
+.git
+.env.local
+.env*.local
+*.log
+.DS_Store
+.vscode
+.idea
+
+# Cloudflare Worker files (deployed separately)
+cloudflare-worker.js
+wrangler.toml
+
+# Documentation
+*.md
+!README.md
+
+# Test files
+create-test-user.js
+local-ai-server.js
+
+# SQL files
+*.sql
+
+# Development only
+.eslintrc.*
+tsconfig.node.json

@@ -1,0 +1,20 @@
+# Cloudflare Worker Configuration
+# This file configures the deployment of the AI worker to Cloudflare
+
+name = "plant-health-ai-worker"
+main = "cloudflare-worker.js"
+compatibility_date = "2024-01-01"
+
+# Worker settings
+workers_dev = true
+
+# OpenAI API Key for plant identification and disease detection
+# IMPORTANT: Copy this file to wrangler.toml and add your actual API key
+[vars]
+OPENAI_API_KEY = "YOUR_OPENAI_API_KEY_HERE"
+
+# To set up:
+# 1. Copy this file: cp wrangler.toml.example wrangler.toml
+# 2. Get your OpenAI API key from: https://platform.openai.com/api-keys
+# 3. Replace YOUR_OPENAI_API_KEY_HERE with your actual key
+# 4. Deploy: npm run worker:deploy
