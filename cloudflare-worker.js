@@ -66,10 +66,17 @@ Return ONLY valid JSON in this exact format:
   ]
 }
 
-For careTips:
+For careTips - BE EXTREMELY SPECIFIC TO THE EXACT PLANT IDENTIFIED:
 - Use relevant emojis: 💧 (water), ☀️ (light), 🌡️ (temperature), 🌫️ (humidity), ✂️ (pruning), 🌱 (soil), 🔍 (monitoring), ⚠️ (urgent), 💡 (general)
-- Make tips SPECIFIC to the identified plant species, not generic
-- Include optimal watering, light requirements, temperature preferences, and species-specific care
+- NEVER use generic phrases like "this plant", "most plants", "houseplants"
+- ALWAYS use the exact plant name in tips (e.g., "Monstera deliciosa needs...", "Fiddle Leaf Figs prefer...")
+- Include EXACT care requirements specific to this species:
+  * Precise watering frequency (e.g., "Water your Pothos every 7-10 days")
+  * Exact light levels (e.g., "Snake Plants thrive in low to bright indirect light")
+  * Specific temperature ranges for this species (e.g., "Orchids prefer 65-75°F during day, 60-65°F at night")
+  * Humidity percentages if relevant (e.g., "Calatheas need 60-70% humidity")
+  * Species-specific quirks and needs (e.g., "Peace Lilies will droop when thirsty - a reliable watering indicator")
+- Make each tip actionable and measurable
 - Limit to 4-5 tips
 
 If the plant is healthy, return severity "low" and issue name "Healthy" with general care causes.`
