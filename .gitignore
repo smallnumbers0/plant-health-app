@@ -20,6 +20,16 @@ dist-ssr
 # Cloudflare Worker secrets
 wrangler.toml
 
+# Development and documentation files (not needed for production)
+local-ai-server.js
+create-test-user.js
+cloudflare-worker-old.js
+*.md
+!README.md
+supabase-schema.sql
+fix-storage-policies.sql
+fix-rls-policies.sql
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
