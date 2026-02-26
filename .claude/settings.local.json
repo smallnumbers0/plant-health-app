@@ -3,7 +3,11 @@
     "allow": [
       "Bash(xargs ls:*)",
       "Bash(npm run build:*)",
-      "Bash(npm run worker:deploy:*)"
+      "Bash(npm run worker:deploy:*)",
+      "Bash(find /Users/gengar/Home/projects/plant-health-app -type f -name \"*supabase*\" 2>/dev/null | head -20)",
+      "Bash(find /Users/gengar/Home/projects/plant-health-app -type f -name \"*.sql\" 2>/dev/null | head -20)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" https://plant-health-ai-worker.jchoi53.workers.dev)",
+      "Bash(curl -s -X POST https://plant-health-ai-worker.jchoi53.workers.dev -H \"Content-Type: application/json\" -d '{\"imageUrl\":\"https://example.com/test.jpg\"}' | head -c 500)"
     ],
     "deny": [],
     "ask": []

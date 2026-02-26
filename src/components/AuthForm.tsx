@@ -46,7 +46,7 @@ export function AuthForm({ mode: initialMode = 'signin' }: AuthFormProps) {
     setLoading(true);
 
     // Demo credentials - auto-creates account if it doesn't exist
-    const demoEmail = 'demo@example.com';
+    const demoEmail = 'demo@plant-health-app.test';
     const demoPassword = 'demo123456';
     const demoName = 'Demo User';
 
